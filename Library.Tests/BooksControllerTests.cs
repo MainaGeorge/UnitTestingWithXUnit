@@ -11,11 +11,12 @@ namespace Library.Tests
     public class BooksControllerTests
     {
         private readonly BooksController _booksController;
+        private readonly IBookService _service;
 
         public BooksControllerTests()
         {
-            var service = new BookService();
-            _booksController = new BooksController(service);
+            _service = new BookService();
+            _booksController = new BooksController(_service);
         }
         [Fact]
         public void GetAll_ReturnsAListOfBooks()
@@ -126,6 +127,7 @@ namespace Library.Tests
 
             //assert
             Assert.IsType<NoContentResult>(deleteResponse);
+
         }
 
         [Theory]
@@ -140,6 +142,7 @@ namespace Library.Tests
 
             //assert
             Assert.IsType<NotFoundResult>(deleteResponse);
+            Assert.Equal(5, _service.GetAll().Count());
         }
     }
 }
